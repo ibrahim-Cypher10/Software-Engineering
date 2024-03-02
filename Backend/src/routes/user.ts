@@ -1,12 +1,11 @@
 import { defaultMaxListeners } from "events";
 import express from "express";
+import { newUser } from "../controllers/user.js";
 
 
 const app = express.Router();
 
-app.post("/new", (req, res, next) => {
-
-})
+app.post("/new", newUser)
 
 
-export default app;
+export default app; 
