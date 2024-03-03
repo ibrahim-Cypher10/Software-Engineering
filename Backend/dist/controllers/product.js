@@ -35,4 +35,26 @@ export const addProduct = TryCatch(async(req,res,next)=>{
     }
 })
 
+export const updateProduct =  TryCatch(async (req, res,next) => {
+  try {
+    const { _id, name, color, price, vendor } = req.body;
+
+    const product = await Product.findById(_id);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product does not exist." });
+    }
+    product.name = name;
+    product.color = color;
+    product.price = price;
+    product.vendor = vendor;
+
+    await product.save();
+
+    res.status(200).json({ message: "Product updated successfully." });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update product details." });
+  }
+});
+
 
