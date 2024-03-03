@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
 
+// Schema of the users.
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
