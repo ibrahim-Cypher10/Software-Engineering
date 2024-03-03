@@ -1,7 +1,22 @@
 # OLumsX README
 
-Welcome to OLumsX, LUMS's first online marketplace! This repository contains both the frontend and backend code necessary to implement core functionalities such as login, signup, json auth, error handling, and product management.
-More over APIs for User delete profile, user delete profile and user view profile by ID are made an tested with Postman.
+Welcome to OLumsX, LUMS's first online marketplace! This repository contains both the frontend and backend code necessary to implement core functionalities. 35% Use casescompleted.
+Usecases: 
+1. login,
+2. signup,
+3. JWT for auth,
+4. error handling,
+
+Only APIs (Thorougly tested using Postman):
+1. User delete profile
+2. User update profile
+3. User view profile by ID
+
+Frontend:
+1. login page
+2. Home Page
+3. Signup pages
+
 
 This project is built using the MERN stack (MongoDB, Express, React, Node.js) and JavaScript. Before proceeding, please ensure that Node.js and JavaScript are correctly installed on your system.
 
