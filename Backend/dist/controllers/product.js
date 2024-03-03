@@ -3,7 +3,7 @@ import { TryCatch } from "../middlewares/error.js";
 import bcrypt from 'bcrypt';
 import Product from '../models/product.js'; 
 
-
+// Method to fetch all current products.
 export const fetchProduct = TryCatch(async(req,res,next) =>{
     try {
       const products = await Product.find();
@@ -11,16 +11,16 @@ export const fetchProduct = TryCatch(async(req,res,next) =>{
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch product." });
     }
-
 })
 
+// Method to add a product to the database.
 export const addProduct = TryCatch(async(req,res,next)=>{
 
     try {
       const { name, category, price, vendor } = req.body;
       console.log(name)
     
-      const product = new Product({
+      const product = new Product({                    // Creates a new product with input data.
         name,
         category,
         price,
@@ -35,21 +35,23 @@ export const addProduct = TryCatch(async(req,res,next)=>{
     }
 })
 
+// Method to update a product currently in the database.
 export const updateProduct =  TryCatch(async (req, res,next) => {
   try {
     const { _id, name, color, price, vendor } = req.body;
 
-    const product = await Product.findById(_id);
+    const product = await Product.findById(_id);                          // Checks if the product exists in the database.
 
-    if (!product) {
+    if (!product) {                                                            
       return res.status(404).json({ error: "Product does not exist." });
     }
+    
     product.name = name;
     product.color = color;
     product.price = price;
     product.vendor = vendor;
 
-    await product.save();
+    await product.save();                                                // Saves updated details of product into the database.
 
     res.status(200).json({ message: "Product updated successfully." });
   } catch (error) {
@@ -57,13 +59,13 @@ export const updateProduct =  TryCatch(async (req, res,next) => {
   }
 });
 
-
+// Method to delete a product that is in the database.
 export const deleteProduct =  TryCatch(async (req, res,next) => {
 
   try {
     const { productId } = req.body;
 
-    const product = await Product.findByIdAndDelete(productId);
+    const product = await Product.findByIdAndDelete(productId);         // Checks if the product exists in the database.
 
     if (!product) {
       return res.status(404).json({ error: "Product does not exist." });
