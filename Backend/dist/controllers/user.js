@@ -100,24 +100,38 @@ export const loginUser = TryCatch(async (req, res, next) => {
 });
 
 export const updateUser = TryCatch(async (req, res, next) => {
-    const { userId } = req.params;
-    const updateData = req.body;
-    if (updateData.password) {
-        const salt = await bcrypt.genSalt(10);
-        updateData.password = await bcrypt.hash(updateData.password, salt);
-    }
-    const user = await User.findByIdAndUpdate(userId, updateData, { new: true });
-    if (!user) {
-        return res.status(404).json({
-            success: false,
-            message: "User not found."
-        });
-    }
-    return res.status(200).json({
-        success: true,
-        message: "User updated successfully.",
-        user,
-    });
+    try {
+    const {
+      userID,
+      password,
+      first_name,
+      last_name,
+      address,
+      gender,
+      DOB,
+    } = req.body;
+
+    const user = await User.findById (userID);
+    user._id = userID;
+    user.username = user.username;
+    user.email = user.email;
+
+    const hashedPassword = await bcrypt.hash (password, 5);
+    user.password = hashedPassword;
+
+    user.user_type = user.user_type;
+    user.first_name = first_name;
+    user.last_name = last_name;
+    user.address = address;
+    user.gender = gender;
+    user.DOB = DOB;
+
+    await user.save ();
+
+    res.status (200).json ({message: 'User updated successfully.'});
+  } catch (error) {
+    res.status (500).json ({message: 'Failed to update user.'});
+  }
 });
 export const deleteUser = TryCatch(async (req, res, next) => {
     const { userId } = req.params;
