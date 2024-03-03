@@ -2,6 +2,7 @@ import { User } from "../models/user.js";
 // import { Cart} from "../models/cart.js";
 import { TryCatch } from "../middlewares/error.js";
 import bcrypt from 'bcrypt';
+
 // Create a new user when signing up
 export const newUser = TryCatch(async (req, res, next) => {
     const {
@@ -78,7 +79,7 @@ export const newUser = TryCatch(async (req, res, next) => {
       }
 });
 
-
+// API for Logging in users. Bcrypt is used for hashing and comparing the entered password as the password is saved after hashing in the database
 export const loginUser = TryCatch(async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -104,6 +105,7 @@ export const loginUser = TryCatch(async (req, res, next) => {
   }
 });
 
+// API to update user details
 export const updateUser = TryCatch(async (req, res, next) => {
     try {
     const {
