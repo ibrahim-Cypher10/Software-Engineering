@@ -1,11 +1,12 @@
 # OLumsX README
 
-Welcome to OLumsX, LUMS's first online marketplace! This repository contains both the frontend and backend code necessary to implement core functionalities. 35% Use casescompleted.
-Usecases: 
-1. login,
-2. signup,
-3. JWT for auth,
-4. error handling,
+Welcome to OLumsX, LUMS's first online marketplace! This repository contains both the frontend and backend code necessary to implement core functionalities.
+
+UseCases: 
+1. Login,
+2. Signup,
+3. JSONWebTokens for Authentication,
+4. Error Handling,
 
 Only APIs (Thorougly tested using Postman):
 1. User delete profile
