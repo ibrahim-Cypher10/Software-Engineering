@@ -58,3 +58,20 @@ export const updateProduct =  TryCatch(async (req, res,next) => {
 });
 
 
+export const deleteProduct =  TryCatch(async (req, res,next) => {
+
+  try {
+    const { productId } = req.body;
+
+    const product = await Product.findByIdAndDelete(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: "Product does not exist." });
+    }
+
+    res.status(200).json({ message: "Product deleted successfully." });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete product." });
+  }
+})
+
