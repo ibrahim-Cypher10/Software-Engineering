@@ -2,7 +2,7 @@ import { User } from "../models/user.js";
 // import { Cart} from "../models/cart.js";
 import { TryCatch } from "../middlewares/error.js";
 import bcrypt from 'bcrypt';
-
+// Create a new user when signing up
 export const newUser = TryCatch(async (req, res, next) => {
     const {
         username,
@@ -30,12 +30,14 @@ export const newUser = TryCatch(async (req, res, next) => {
         ) {
           return res.status (400).json ({error: 'All fields required.'});
         }
-    
+
+          // Regex to check email format
         const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!emailReg.test (email)) {
           return res.status (400).json ({error: 'Invalid Email address entered.'});
         }
-    
+
+          // Check if user exists
         const existingUser = await User.findOne ({email});
         if (existingUser) {
           return res.status (400).json ({error: 'Email already in use'});
