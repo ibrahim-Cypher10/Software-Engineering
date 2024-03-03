@@ -9,7 +9,7 @@ UseCases:
 4. Error Handling,
 
 Only APIs (Thorougly tested using Postman):
-1. User delete profile
+1. Delete User Profile
 2. User update profile
 3. User view profile by ID
 
