@@ -66,4 +66,8 @@ All backend APIs have been thoroughly tested using Postman to ensure reliability
 
 ---
 
-Enjoy exploring and contributing to OLumsX! This project aims to provide a comprehensive online marketplace experience, thanks to the collaborative efforts of our developers and contributors.
+This project aims to provide a comprehensive online marketplace experience, thanks to the collaborative efforts of our developers and contributors.
+For any suggestions feel free to reachout to us.
+
+~ Group 10.
+
