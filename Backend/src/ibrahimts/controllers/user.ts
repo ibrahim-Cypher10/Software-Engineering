@@ -58,7 +58,7 @@ export const loginUser = TryCatch(
         return res.status(200).json({
             success: true,
             token,
-            message: "Login successful"
+            message: "Login successful."
         });
     }
 );
