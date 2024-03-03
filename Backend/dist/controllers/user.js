@@ -1,50 +1,102 @@
 import { User } from "../models/user.js";
+// import { Cart} from "../models/cart.js";
 import { TryCatch } from "../middlewares/error.js";
 import bcrypt from 'bcrypt';
 export const newUser = TryCatch(async (req, res, next) => {
-    const { name, email, password, gender, _id, dob } = req.body;
-    const user = await User.create({
+    const {
         username,
         email,
         password,
-        user,
-        _id,
-        dob: new Date(dob),
-    });
-    return res.status(200).json({
-        success: true,
-        message: `Welcome, ${user.name}`
-    });
+        user_type,
+        first_name,
+        last_name,
+        address,
+        gender,
+        DOB,
+      } = req.body;
+    
+      try {
+        if (
+          !username ||
+          !email ||
+          !password ||
+          !user_type ||
+          !first_name ||
+          !last_name ||
+          !address ||
+          !gender ||
+          !DOB
+        ) {
+          return res.status (400).json ({error: 'All fields required.'});
+        }
+    
+        const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!emailReg.test (email)) {
+          return res.status (400).json ({error: 'Invalid Email address entered.'});
+        }
+    
+        const existingUser = await User.findOne ({email});
+        if (existingUser) {
+          return res.status (400).json ({error: 'Email already in use'});
+        }
+    
+        const passwordReg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordReg.test (password)) {
+          return res.status (400).json ({
+            error: 'Password must be at least 8 characters long, have at least one uppercase letter, one lowercase letter, one digit and one special character.',
+          });
+        }
+    
+        const hashedPassword = await bcrypt.hash (password, 5);
+        const newUser = new User ({
+          username,
+          email,
+          password: hashedPassword,
+          user_type,
+          first_name,
+          last_name,
+          address,
+          gender,
+          DOB,
+        });
+    
+        await newUser.save ();
+    
+        // const cart = new Cart ({
+        //     customerId: newUser._id,
+        //     tot_price: 0,
+        //   });
+      
+        //   await cart.save ();
+    
+        res.status (201).json ({message: 'Signup successfull.'});
+      } catch (err) {
+        res.status (500).json ({error: 'Error during signup'});
+      }
 });
 export const loginUser = TryCatch(async (req, res, next) => {
     const { email, password } = req.body;
-    console.log(email, password);
-    console.log("here");
+
+  try {
     const user = await User.findOne({ email });
-    console.log(`Checking ${user}`);
     if (!user) {
-        return res.status(401).json({
-            success: false,
-            message: "Authentication failed. User not found."
-        });
+      return res.status(400).json({ error: "Invalid email entered." });
     }
-    console.log(user.password);
-    console.log(password);
-    const isMatch = await bcrypt.compare(password, user.password);
-    console.log("here---");
-    console.log(isMatch);
-    if (!isMatch) {
-        return res.status(401).json({
-            success: false,
-            message: "Authentication failed. Wrong password."
-        });
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+      return res.status(400).json({ error: "Invalid password enter" });
     }
-    const token = user.generateAuthToken();
-    return res.status(200).json({
-        success: true,
-        token,
-        message: "Login successful"
+
+    res.status(200).json({
+      message: "Logged in successfully",
+      user_id: user._id,
+      user_type: user.user_type,
     });
+  } catch (err) {
+    // console.log(err);
+    res.status(500).json({ error: "Error during login" });
+  }
 });
 
 export const updateUser = TryCatch(async (req, res, next) => {
