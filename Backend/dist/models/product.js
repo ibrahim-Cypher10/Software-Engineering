@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+// Product Schema for the model. This is the list of all options user will have to fill in during signing up.
 const prodSchema = new mongoose.Schema ({
   name: {
     type: String,
