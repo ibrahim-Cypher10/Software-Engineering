@@ -1,26 +1,48 @@
 import { User } from "../models/user.js";
-export const newUser = async (req, res, next) => {
-    try {
-        console.log("here0");
-        const { name, email, photo, gender, _id, dob } = req.body;
-        console.log("here");
-        const user = await User.create({
-            name,
-            email,
-            photo,
-            gender,
-            _id,
-            dob: new Date(dob),
-        });
-        return res.status(200).json({
-            success: true,
-            message: `Welcome, ${user.name}`
-        });
-    }
-    catch (error) {
-        return res.status(201).json({
+import { TryCatch } from "../middlewares/error.js";
+import bcrypt from 'bcrypt';
+export const newUser = TryCatch(async (req, res, next) => {
+    const { name, email, password, gender, _id, dob } = req.body;
+    const user = await User.create({
+        name,
+        email,
+        password,
+        gender,
+        _id,
+        dob: new Date(dob),
+    });
+    return res.status(200).json({
+        success: true,
+        message: `Welcome, ${user.name}`
+    });
+});
+export const loginUser = TryCatch(async (req, res, next) => {
+    const { email, password } = req.body;
+    console.log(email, password);
+    console.log("here");
+    const user = await User.findOne({ email });
+    console.log(`Checking ${user}`);
+    if (!user) {
+        return res.status(401).json({
             success: false,
-            message: error
+            message: "Authentication failed. User not found."
         });
     }
-};
+    console.log(user.password);
+    console.log(password);
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log("here---");
+    console.log(isMatch);
+    if (!isMatch) {
+        return res.status(401).json({
+            success: false,
+            message: "Authentication failed. Wrong password."
+        });
+    }
+    const token = user.generateAuthToken();
+    return res.status(200).json({
+        success: true,
+        token,
+        message: "Login successful"
+    });
+});

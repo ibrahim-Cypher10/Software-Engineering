@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import validator from 'validator';
+import jwt from 'jsonwebtoken';
 const schema = new mongoose.Schema({
     _id: {
         type: String,
@@ -15,9 +16,9 @@ const schema = new mongoose.Schema({
         required: [true, "Please enter your email"],
         validate: validator.default.isEmail,
     },
-    photo: {
+    password: {
         type: String,
-        required: [true, "Please upload your Photo"]
+        required: [true, "Please enter a password"]
     },
     role: {
         type: String,
@@ -46,4 +47,8 @@ schema.virtual("age").get(function () {
     ;
     return age;
 });
+schema.methods.generateAuthToken = function () {
+    const token = jwt.sign({ _id: this._id, role: this.role }, 'yourSecretKey', { expiresIn: '1h' });
+    return token;
+};
 export const User = mongoose.model("User", schema);
