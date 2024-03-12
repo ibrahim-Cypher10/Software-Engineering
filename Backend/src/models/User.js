@@ -1,8 +1,5 @@
-import mongoose from 'mongoose';
-import validator from 'validator';
-import jwt from 'jsonwebtoken';
+import mongoose from "mongoose";
 
-// Schema of the users.
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -44,9 +41,6 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+const User = new mongoose.model("User", UserSchema);
 
-// Userschema.methods.generateAuthToken = function () {
-//     const token = jwt.sign({ _id: this._id, role: this.role }, 'yourSecretKey', { expiresIn: '1h' });
-//     return token;
-// };
-export const User = mongoose.model("User",UserSchema);
+export default User;

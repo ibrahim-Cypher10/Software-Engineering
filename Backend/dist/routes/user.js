@@ -1,6 +1,19 @@
 import express from "express";
-import { newUser, loginUser } from "../controllers/user.js";
+import { newUser, loginUser , updateUser, deleteUser, getUserDetails} from "../controllers/user.js";
 const app = express.Router();
-app.post("/new", newUser);
+
+// Route to Signup page
+app.post("/signup", newUser);
+
+// Route to login page
 app.post("/login", loginUser);
+
+// Route to update user API
+app.put('/updateuser', updateUser);
+
+// API to delete user by ID
+app.delete('/deleteuser', deleteUser);
+
+// Finding user details by ID
+app.get('/getuserbyid', getUserDetails);
 export default app;

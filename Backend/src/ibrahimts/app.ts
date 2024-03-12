@@ -1,8 +1,8 @@
 import express from "express";
 
-import userRoute from './routes/user.js';
-import { connectDB } from "./utils/features.js";
-import { errorMiddleware } from "./middlewares/error.js";
+import userRoute from './ibrahimts/routes/user.js';
+import { connectDB } from "./ibrahimts/utils/features.js";
+import { errorMiddleware } from "./ibrahimts/middlewares/error.js";
 
 const port = 4000;
 
