@@ -17,6 +17,10 @@ const prodSchema = new mongoose.Schema ({
     type: String,
     required: [true, 'name is required.'],
   },
+  description: {
+    type: String,
+    required: [true, 'product description is required.'],
+  },
 });
 
 const Product = new mongoose.model ('Product', prodSchema);

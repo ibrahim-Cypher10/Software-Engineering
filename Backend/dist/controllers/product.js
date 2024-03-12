@@ -17,7 +17,7 @@ export const fetchProduct = TryCatch(async(req,res,next) =>{
 export const addProduct = TryCatch(async(req,res,next)=>{
 
     try {
-      const { name, category, price, vendor } = req.body;
+      const { name, category, price, vendor, description } = req.body;
       console.log(name)
     
       const product = new Product({                    // Creates a new product with input data.
@@ -25,6 +25,7 @@ export const addProduct = TryCatch(async(req,res,next)=>{
         category,
         price,
         vendor,
+        description,
       });
       
        await product.save();
@@ -38,7 +39,7 @@ export const addProduct = TryCatch(async(req,res,next)=>{
 // Method to update a product currently in the database.
 export const updateProduct =  TryCatch(async (req, res,next) => {
   try {
-    const { _id, name, color, price, vendor } = req.body;
+    const { _id, name, color, price, vendor, description } = req.body;
 
     const product = await Product.findById(_id);                          // Checks if the product exists in the database.
 
@@ -50,6 +51,7 @@ export const updateProduct =  TryCatch(async (req, res,next) => {
     product.color = color;
     product.price = price;
     product.vendor = vendor;
+    product.description = description;
 
     await product.save();                                                // Saves updated details of product into the database.
 
