@@ -1,0 +1,167 @@
+/* Basic reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Basic body styling */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Utility classes */
+.container {
+  max-width: 2000px;
+  width: 2000px;
+  margin: auto;
+  padding: 0 2rem;
+}
+
+/* Header styles */
+.header {
+  background: #fff;
+  padding: 1rem 0;
+  border-bottom: 2px solid #eee;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation bar styling */
+.navbar {
+  background: #0046be; /* Best Buy blue */
+  color: white;
+  padding: 0.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar h1 {
+  color: white;
+  margin-right: 2rem;
+}
+
+.navbar ul {
+  list-style-type: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+}
+
+.search-bar {
+  flex-grow: 1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+}
+
+.search-bar button {
+  padding: 0.5rem 1rem;
+  background: #ffcd05; /* Best Buy yellow */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Hero banner */
+.hero-banner {
+  background-image: url('/path-to-hero-image.jpg');
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  padding: 2rem;
+  color: white;
+}
+
+.hero-content button {
+  background-color: #ffcd05;
+  color: black;
+  padding: 1rem 2rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+/* Featured products styling */
+.featured-products {
+  background: white;
+  padding: 2rem 0;
+  margin-top: -1.5rem; /* Negative margin for the overlap effect */
+}
+
+.featured-products h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 0 2rem;
+}
+
+.product-card {
+  background-color: #fff;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-card:hover {
+  transform: scale(1.05);
+}
+
+/* Footer styling */
+.footer {
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .hero-banner {
+    padding: 1rem;
+  }
+
+  .hero-content button {
+    padding: 0.75rem 1.5rem;
+  }
+}

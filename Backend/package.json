@@ -1,4 +1,5 @@
 {
+<<<<<<< Updated upstream
   "name": "backend",
   "version": "1.0.0",
   "description": "",
@@ -29,5 +30,13 @@
     "@types/node": "^20.11.24",
     "@types/validator": "^13.11.9",
     "typescript": "^5.3.3"
+=======
+  "dependencies": {
+    "axios": "^1.6.7",
+    "express": "^4.18.3"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0"
+>>>>>>> Stashed changes
   }
 }

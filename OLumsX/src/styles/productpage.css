@@ -1,0 +1,152 @@
+
+/* ### CSS Styling (ProductPage.css) */
+/* ```css */
+.product-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem;
+  background: #fff;
+}
+
+.product-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.main-image {
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.thumbnail-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  object-fit: cover;
+  opacity: 0.6;
+}
+
+.thumbnail.selected {
+  border-color: #007bff;
+  opacity: 1;
+}
+
+.product-details {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-details h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.item-number {
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.rating {
+  margin-bottom: 1rem;
+  color: #ffc107; /* Gold color for rating stars */
+}
+
+.price-section {
+  margin-bottom: 1rem;
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #E55300;
+}
+
+.discount {
+  font-size: 0.9rem;
+  margin-left: 1rem;
+  color: #E55300;
+}
+
+.original-price {
+  font-size: 0.9rem;
+  text-decoration: line-through;
+  margin-left: 0.5rem;
+  color: #777;
+}
+
+.purchase-options button {
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.buy-now-btn {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.trade-in, .product-offers p, .storage-capacity, .color-selection {
+  margin-top: 1rem;
+}
+
+.options {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.option, .color-option {
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.color-option {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.product-page {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.product-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.main-image {
+  width: 100%;
+  max-width: 500px;
+  object-fit: cover;
+  border-radius
