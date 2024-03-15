@@ -82,7 +82,7 @@ import '../styles/profile.css';
 // Placeholder profile image import
 import placeholderProfilePic from '../assets/image/blackhat.png';
 
-const UserProfile = () => {
+const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [user, setUser] = useState({
     profilePic: placeholderProfilePic,
