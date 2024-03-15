@@ -80,7 +80,7 @@ import React, { useState } from 'react';
 import '../styles/profile.css';
 
 // Placeholder profile image import
-import placeholderProfilePic from '../assets/image/blackhat.png';
+import placeholderProfilePic from '../assets/gray_bg.png';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -165,3 +165,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
