@@ -1,0 +1,172 @@
+
+  
+  .welcome-heading {
+    color: white;
+    text-align: center;
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Ensure the heading is in front of the image */
+  }
+  
+  
+  .image-cover {
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+    text-align: center; /* Center the image horizontally */
+  }
+  
+  .cover-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the entire container */
+  }
+  
+  .gradient-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(38, 80, 116, 0.3), transparent), /* First gradient */
+                linear-gradient(rgba(255, 255, 255, 0.1), transparent), /* Second gradient */
+                linear-gradient(rgba(0, 0, 0, 0.5), transparent); /* Third gradient */
+  }
+  
+  
+  
+
+  .signout-button {
+    display: block;
+    margin: auto;
+    margin-top: 20px;
+  }
+
+  .welcome-heading2 {
+    color: white;
+    font-size: 20px;
+    margin-top: 70px;
+   
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Ensure the heading is in front of the image */
+  }
+
+
+  .RecentProductsAdded {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .heading3{
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  
+  .card-slider-container {
+    margin-left: 20px;
+
+    position: relative;
+  }
+  
+  .card-slider {
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+    scroll-snap-type: x mandatory;
+    margin: 0 -10px; /* Adjust margin to center the cards */
+  }
+  
+  .card {
+    flex: 0 0 auto;
+    width: 300px;
+    margin: 0 10px; /* Adjust margin to center the cards */
+    padding: 10px;
+    width:300px;
+    height:350px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    scroll-snap-align: start;
+  }
+  
+  .card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .card h3 {
+    margin-top: 10px;
+    font-size: 20px;
+  }
+  
+  .card p {
+    margin-top: 5px;
+    font-size: 16px;
+  }
+  
+  /* Next and previous buttons */
+ 
+  .RecentReviews{
+    text-align: center;
+  }
+
+  .RecentProductsAdded,
+.RecentReviews {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px; /* Adjust as needed */
+  margin-bottom: 20px; /* Adjust as needed */
+}
+.see-more-button {
+    background-color: #c63b2e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-top: 20px; /* Adjust as needed */
+    cursor: pointer;
+  }
+  
+  .see-more-button:hover {
+    background-color: #e44525;
+  }
+
+  .error-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(14, 4, 60,0.9); /* Semi-transparent red background */
+    padding: 20px;
+
+    height: 50%;
+    font-size:32px;
+    text-align: center;
+    width:50%;
+    border-radius: 5px;
+    z-index: 9999; /* Ensure it's on top of other elements */
+  }
+  
+  .error-popup-content {
+    padding-top: 60px;
+    color: white;
+  }
+  
+ 
+  
+
+
+  
+  
