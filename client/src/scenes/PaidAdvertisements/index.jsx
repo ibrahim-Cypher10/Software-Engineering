@@ -1,37 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  useTheme,
-  useMediaQuery,
+  Box, Card, CardContent, Typography, Button, useTheme, useMediaQuery
 } from "@mui/material";
-
-// Mock data - replace this with your actual data fetching logic
-const advertisements = [
-  {
-    _id: "ad1",
-    name: "Iphone 15",
-    description: "Apple ka iphone 15",
-    price: "10000",
-    rating: 4.5,
-    active: true,
-  },
-  {
-    _id: "ad2",
-    name: "Bugatti",
-    description: "Bugatti Gold plated",
-    price: "15000000",
-    rating: 5,
-    active: false,
-  },
-  // Add more advertisements as needed
-];
+import { useGetAdvertisementsQuery, useUpdateAdvertisementStatusMutation } from '../../state/api'; // Adjust the import path as needed
 
 // Advertisement component
-const Advertisement = ({ name, description, price, rating, active }) => {
+const Advertisement = ({ ad, toggleActiveStatus }) => {
+  const { _id, name, description, price, rating, active } = ad;
   const theme = useTheme();
 
   return (
@@ -53,12 +28,8 @@ const Advertisement = ({ name, description, price, rating, active }) => {
           Rating: {rating} {active ? "(Active)" : "(Inactive)"}
         </Typography>
       </CardContent>
-      {/* Example action buttons */}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: theme.spacing(2) }}>
-        <Button variant="contained" color="primary" sx={{ marginRight: theme.spacing(1) }}>
-          Edit
-        </Button>
-        <Button variant="outlined" color="error">
+        <Button variant="outlined" color="error" onClick={() => toggleActiveStatus(_id)}>
           {active ? "Deactivate" : "Activate"}
         </Button>
       </Box>
@@ -68,15 +39,34 @@ const Advertisement = ({ name, description, price, rating, active }) => {
 
 // Main component to list paid advertisements
 const PaidAdvertisements = () => {
+  const [refresh, setRefresh] = useState(false); // State to trigger refresh
+  const { data: ads, error, isLoading, refetch } = useGetAdvertisementsQuery();
+  const [updateStatus] = useUpdateAdvertisementStatusMutation();
   const isNonMobile = useMediaQuery("(min-width:600px)");
+
+  const toggleActiveStatus = async (id) => {
+    await updateStatus({ adId: id }).unwrap()
+      .then(() => {
+        setRefresh(!refresh); // Toggle state to force re-fetch
+      })
+      .catch((error) => console.error('Failed to update status:', error));
+  };
+
+  // Effect to re-fetch advertisements when refresh state changes
+  useEffect(() => {
+    refetch();
+  }, [refresh, refetch]);
+
+  if (isLoading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography>Error fetching advertisements!</Typography>;
 
   return (
     <Box sx={{ padding: isNonMobile ? "2rem" : "1rem" }}>
       <Typography variant="h4" sx={{ marginBottom: "2rem" }}>
         Paid Advertisements
       </Typography>
-      {advertisements.map((ad) => (
-        <Advertisement key={ad._id} {...ad} />
+      {ads?.map((ad) => (
+        <Advertisement key={ad._id} ad={ad} toggleActiveStatus={toggleActiveStatus} />
       ))}
     </Box>
   );
