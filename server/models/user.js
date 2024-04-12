@@ -1,55 +1,40 @@
-import mongoose from 'mongoose';
-import validator from 'validator';
-import jwt from 'jsonwebtoken';
+import mongoose from "mongoose";
 
-// Schema of the users.
-const UserSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: [true, "name is required."],
-    unique: [true, "this username is already taken."]
+// User Schema
+const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      min: 2,
+      max: 100,
+    },
+    email: {
+      type: String,
+      required: true,
+      max: 50,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      min: 5,
+    },
+    city: String,
+    state: String,
+    country: String,
+    occupation: String,
+    phoneNumber: String,
+    transactions: Array,
+    role: {
+      type: String,
+      enum: ["user", "admin", "superadmin"],
+      default: "admin",
+    },
   },
-  email: {
-    type: String,
-    required: [true, "email is required."],
-  },
-  password: {
-    type: String,
-    required: [true, "password is required."],
-  },
-  user_type: {
-    type: String,
-    required: true,
-    enum: ["Customer", "Manager", "Vendor"],
-  },
-  first_name: {
-    type: String,
-    required: true,
-  },
-  last_name: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-    required: true,
-  },
-  gender: {
-    type: String,
-    required: true,
-  },
-  DOB: {
-    type: String,
-    required: true,
-  },
-});
+  { timestamps: true }
+);
 
-
-// Userschema.methods.generateAuthToken = function () {
-//     const token = jwt.sign({ _id: this._id, role: this.role }, 'yourSecretKey', { expiresIn: '1h' });
-//     return token;
-// };
-
-export const User = mongoose.model("User",UserSchema);
+const User = mongoose.model("User", UserSchema);
 
 export default User;
