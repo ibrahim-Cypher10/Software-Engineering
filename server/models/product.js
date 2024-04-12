@@ -8,8 +8,7 @@ const prodSchema = new mongoose.Schema ({
   },
   category: {
     type: String,
-    required: true,
-    enum: ["Laptop & Computer", "Mobile Phone", "Tech Accessories", "Clothes", "Decoration"], // Add More
+    required: [true, 'category required',],
   },
   price: {
     type: Number,
@@ -18,6 +17,10 @@ const prodSchema = new mongoose.Schema ({
   vendor: {
     type: String,
     required: [true, 'name is required.'],
+  },
+  vendor_id: {
+    type: String,
+    required: [true, 'vendorid is required.'],
   },
   description: {
     type: String,

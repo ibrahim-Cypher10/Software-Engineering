@@ -1,10 +1,23 @@
 import express from "express";
-import { addProduct, fetchProduct, updateProduct, deleteProduct } from "../controllers/product.js";
+import { addProduct, fetchProduct, updateProduct, deleteProduct, getProductsInCart, recentProducts } from "../controllers/product.js";
 const app = express.Router();
 
-app.post("/fetchprod", fetchProduct)   // Route to fetch a product
-app.post("/addproduct",addProduct)  // Route to add a new product
-app.put("/updateproduct",updateProduct)  // Route to update an existing product
-app.delete("/deleteproduct",deleteProduct)  // Route to delete a product
+// Route to fetch a product
+app.post("/fetchprod", fetchProduct)
+
+// Route to get recent products.
+app.get("/recentproducts", recentProducts)
+
+// Route to add a new product
+app.post("/addproduct",addProduct)
+
+// Route to update an existing product
+app.put("/updateproduct",updateProduct)
+
+// Route to delete a product
+app.delete("/deleteproduct",deleteProduct)
+
+// Route to get product from cart
+app.post("/getproductsincart", getProductsInCart)
 
 export default app;

@@ -16,17 +16,17 @@ export const fetchProduct = TryCatch(async(req,res,next) =>{
 // Method to add a product to the database.
 export const addProduct = TryCatch(async(req,res,next)=>{
     try {
-      const { name, category, price, vendor, description } = req.body;
-      console.log(name)
+      const { name, category, price, vendor, vendor_id, description } = req.body;
     
       const product = new Product({                    // Creates a new product with input data.
         name,
         category,
         price,
         vendor,
+        vendor_id,
         description,
       });
-      
+      console.log("Product: ",product)
        await product.save();
     
       res.status(201).json({ message: "Product added successfully." });
@@ -77,3 +77,60 @@ export const deleteProduct =  TryCatch(async (req, res,next) => {
     res.status(500).json({ error: "Failed to delete product." });
   }
 })
+
+export const getProductsInCart =  TryCatch(async (req, res,next) => {
+  try {
+      const { customerID } = req.body;
+  
+      const cart = await Cart.findOne({ customerId: customerID });
+  
+      if (!cart) {
+        return res
+          .status(404)
+          .json({ error: "Cart not found for this customer." });
+      }
+  
+      const productsInCart = await ProductsinCart.find({ cart: cart._id });
+  
+      const productIds = productsInCart.map((item) => item.product);
+  
+      const products = await Product.find({ _id: { $in: productIds } });
+  
+      const productsWithQuantity = products.map((product) => {
+        const productInCart = productsInCart.find(
+          (item) => item.product.toString() === product._id.toString()
+        );
+        return {
+          ...product.toObject(),
+          quantity: productInCart.quantity,
+        };
+      });
+  
+      res.status(200).json(productsWithQuantity);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to get products in cart" });
+    }
+  });
+
+  
+export const recentProducts = TryCatch(async (req, res,next) => {
+  try {
+    console.log("hello")
+    const userId = req.query.userId;
+    console.log(userId)
+    const limit = parseInt(req.query.limit) ; // Default limit to 3 if not provided
+
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    // Assuming you have a 'createdAt' field in your Product model to track creation time
+    const recentProducts = await Product.find({ vendor_id: userId }).sort({ _id: -1 }).limit(limit);
+    console.log(recentProducts)
+
+    res.json(recentProducts);
+  } catch (error) {
+    console.error('Error fetching recent products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
