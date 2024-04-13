@@ -26,6 +26,10 @@ const prodSchema = new mongoose.Schema ({
     type: String,
     required: [true, 'product description is required.'],
   },
+  wishlisted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Product = new mongoose.model ('Product', prodSchema);

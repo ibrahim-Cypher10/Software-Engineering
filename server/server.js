@@ -15,6 +15,7 @@ import ProductsinOrder from "./models/productsInOrder.js";
 import userRoute from './routes/user.js';
 import productRoute from './routes/product.js';
 import chatRoute from './routes/chat.js';
+import wishlistRoute from './routes/wishlist.js';
 import { connectDB } from "./utils/features.js";
 import { errorMiddleware } from "./middlewares/error.js";
 
@@ -33,6 +34,9 @@ app.use("/api/product", productRoute);
 
 // Chat api routing
 app.use("/api/chat", chatRoute);
+
+// Wishlist api routing
+app.use("/api/wishlist", wishlistRoute);
 
 app.use(errorMiddleware);
 

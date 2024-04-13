@@ -1,17 +1,28 @@
 import { User } from "../models/user.js";
 import { TryCatch } from "../middlewares/error.js";
 import bcrypt from 'bcrypt';
-import Product from '../models/product.js'; 
+import Product from '../models/product.js';
+import Wishlist from '../models/wishlist.js'
 
 // Method to fetch all current products.
-export const fetchProduct = TryCatch(async(req,res,next) =>{
-    try {
+export const fetchProduct = TryCatch(async (req, res, next) => {
+  try {
+      const { client_id } = req.body;                         // now need to send clientID.
       const products = await Product.find();
-      res.status(200).json(products);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch product." });
-    }
-})
+      const wishlistEntries = await Wishlist.find({ client_id });
+
+      const wishlistProductIds = new Set(wishlistEntries.map(entry => entry.product_id.toString()));
+
+      const productsWithWishlist = products.map(product => ({
+          ...product.toObject(),
+          wishlisted: wishlistProductIds.has(product._id.toString())
+      }));
+
+      res.status(200).json(productsWithWishlist);
+  } catch (error) {
+      res.status(500).json({ error: "Failed to fetch products." });
+  }
+});
 
 // Method to add a product to the database.
 export const addProduct = TryCatch(async(req,res,next)=>{
