@@ -5,7 +5,9 @@ import jwt from 'jsonwebtoken';
 const ChatMessageSchema = new mongoose.Schema({
     from: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     to: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    message: String,
+    // from: { type: Number },
+    // to: { type: Number },
+    message: {type: String},
     timestamp: { type: Date, default: Date.now }
   });
 
