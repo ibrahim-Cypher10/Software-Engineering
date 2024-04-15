@@ -15,12 +15,12 @@ const orderSchema = new mongoose.Schema ({
     type: Number,
     required: true,
   },
-  paid: {
+  status: {
     type: Boolean,
     required: true,
   },
 });
 
-const Order = new mongoose.model ('Order', orderSchema);
+export const Order = new mongoose.model ('Order', orderSchema);
 
 export default Order;
