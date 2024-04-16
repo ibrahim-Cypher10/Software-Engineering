@@ -141,3 +141,26 @@ export const productsinCart = TryCatch(async (req, res, next) => {
         res.status(500).json({ error: "Failed to get products in cart" });
       }
 });
+
+// Clear out a cart.
+export const clearCart = TryCatch(async (req, res, next) => {
+    try {
+        const { customerID } = req.body;
+
+        const cart = await Cart.findOne({ customerId: customerID });
+        if (!cart) {
+            return res.status(404).json({ message: "cart not found for this customer." });
+        }
+
+        const result = await ProductsinCart.deleteMany({ cart: cart._id });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: "no products found in the cart to clear." });
+        }
+
+        await Cart.updateOne({ _id: cart._id }, { $set: { tot_price: 0 } });
+  
+        res.status(200).json({ message: "cart cleared successfully." })
+    } catch (error) {
+        res.status(500).json({ error: "failed to clear cart." });
+    }
+});

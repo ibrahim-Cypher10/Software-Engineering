@@ -2,7 +2,7 @@ import { User } from "../models/user.js";
 import Order from "../models/order.js";
 import ProductsinOrder from "../models/productsInOrder.js";
 import Product from "../models/product.js";
-// import { Cart} from "../models/cart.js";
+import Cart from "../models/cart.js";
 import { TryCatch } from "../middlewares/error.js";
 import bcrypt from 'bcrypt';
 
@@ -69,12 +69,12 @@ export const newUser = TryCatch(async (req, res, next) => {
     
         await newUser.save ();
     
-        // const cart = new Cart ({
-        //     customerId: newUser._id,
-        //     tot_price: 0,
-        //   });
+        const cart = new Cart ({
+            customerId: newUser._id,
+            tot_price: 0,
+          });
       
-        //   await cart.save ();
+          await cart.save ();
     
         res.status (201).json ({message: 'Signup successfull.'});
       } catch (err) {
@@ -146,18 +146,6 @@ export const updateUser = TryCatch(async (req, res, next) => {
 
 // Delete User
 export const deleteUser = TryCatch(async (req, res, next) => {
-    // const { userId } = req.params;
-    // const user = await User.findByIdAndDelete(userId);
-    // if (!user) {
-    //     return res.status(404).json({
-    //         success: false,
-    //         message: "User not found."
-    //     });
-    // }
-    // return res.status(200).json({
-    //     success: true,
-    //     message: "User deleted successfully."
-    // });
     try {
       const { userID } = req.body;
   

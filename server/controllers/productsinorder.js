@@ -5,6 +5,7 @@ import Product from '../models/product.js';
 import ProductsinCart from '../models/productsInCart.js';
 import ProductsinOrder from '../models/productsInOrder.js';
 import Order from '../models/order.js';
+import Cart from '../models/cart.js';
 
 // ProductsinOrder.
 
@@ -69,8 +70,19 @@ export const createOrdersWithVendors = TryCatch(async (req, res, next) => {
             await productInOrder.save();
           }
         }
+
+        try 
+        {
+            const cart = await Cart.findOne({ customerId: customerId });
+    
+            const result = await ProductsinCart.deleteMany({ cart: cart._id });
+
+            await Cart.updateOne({ _id: cart._id }, { $set: { tot_price: 0 } });
+
+        } catch (error) {}
     
         res.status(200).json({ message: "Orders placed successfully." });
+
       } catch (error) {
         res.status(500).json({ error: "Failed to check tests." });
       }

@@ -21,5 +21,4 @@ app.post('/createordersdiffvendors', createOrdersWithVendors);
 // Route to fetch the product details for referenced order.
 app.post('/fetchproddetails', fetchOrderDetails);
 
-
 export default app;

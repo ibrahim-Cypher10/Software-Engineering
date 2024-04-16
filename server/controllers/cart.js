@@ -24,7 +24,7 @@ export const createCart = TryCatch(async (req, res, next) => {
       }
 });
 
-// Get Total Price of Cart
+// Get Total Price of Cart.
 export const getPriceCart = TryCatch(async (req, res, next) => {
     try {
         const { customerID } = req.body;

@@ -4,9 +4,10 @@ import bcrypt from 'bcrypt';
 import Product from '../models/product.js';
 import Wishlist from '../models/wishlist.js'
 import Cart from '../models/cart.js'
+import Reviews from "../models/reviews.js";
 
 // Method to fetch all current products.
-export const fetchProduct = TryCatch(async (req, res, next) => {
+export const fetchProducts = TryCatch(async (req, res, next) => {
   try {
       const { client_id } = req.body;                         // now need to send clientID.
       const products = await Product.find();
@@ -28,17 +29,16 @@ export const fetchProduct = TryCatch(async (req, res, next) => {
 // Method to add a product to the database.
 export const addProduct = TryCatch(async(req,res,next)=>{
     try {
-      const { name, category, price, vendor, vendor_id, description } = req.body;
+      const { name, category, price, vendor, description } = req.body;
     
       const product = new Product({                    // Creates a new product with input data.
         name,
         category,
         price,
         vendor,
-        vendor_id,
         description,
       });
-      console.log("Product: ",product)
+      console.log("Product: ", product)
        await product.save();
     
       res.status(201).json({ message: "Product added successfully." });
@@ -90,60 +90,84 @@ export const deleteProduct =  TryCatch(async (req, res,next) => {
   }
 })
 
-// Method to fetch current products in cart.
-export const getProductsInCart =  TryCatch(async (req, res,next) => {
-  try {
-      const { customerID } = req.body;
-  
-      const cart = await Cart.findOne({ customerId: customerID });
-  
-      if (!cart) {
-        return res
-          .status(404)
-          .json({ error: "Cart not found for this customer." });
-      }
-  
-      const productsInCart = await ProductsinCart.find({ cart: cart._id });
-  
-      const productIds = productsInCart.map((item) => item.product);
-  
-      const products = await Product.find({ _id: { $in: productIds } });
-  
-      const productsWithQuantity = products.map((product) => {
-        const productInCart = productsInCart.find(
-          (item) => item.product.toString() === product._id.toString()
-        );
-        return {
-          ...product.toObject(),
-          quantity: productInCart.quantity,
-        };
-      });
-  
-      res.status(200).json(productsWithQuantity);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to get products in cart" });
-    }
-  });
-
-  
 export const recentProducts = TryCatch(async (req, res,next) => {
   try {
     console.log("hello")
     const userId = req.query.userId;
     console.log(userId)
-    const limit = parseInt(req.query.limit) ; // Default limit to 3 if not provided
+    const limit = parseInt(req.query.limit) ;
 
     if (!userId) {
       return res.status(400).json({ error: 'User ID is required' });
     }
 
     // Assuming you have a 'createdAt' field in your Product model to track creation time
-    const recentProducts = await Product.find({ vendor_id: userId }).sort({ _id: -1 }).limit(limit);
+    const recentProducts = await Product.find({ vendor: userId }).sort({ _id: -1 }).limit(limit);
     console.log(recentProducts)
 
     res.json(recentProducts);
   } catch (error) {
     console.error('Error fetching recent products:', error);
     res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Method to add a review of a product
+export const addReview = TryCatch(async (req, res, next) => {
+  const { customer_id, product_id, rating, review_text } = req.body;
+
+  if (!customer_id || !product_id || !rating || !review_text) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  const newReview = new Reviews({
+    customer_id,
+    product_id,
+    rating,
+    review_text
+  });
+
+  await newReview.save();
+  res.status(201).json({ message: 'Review added successfully' });
+});
+
+// Searchbar API
+export const productSearch = TryCatch(async (req, res, next) => {
+  try {
+    const searchQuery = req.query.query; // Accessing the search query from the URL
+
+    const regex = new RegExp(".*" + searchQuery + ".*", "i");
+
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: regex } },
+        { description: { $regex: regex } }
+      ]
+    });
+
+    if (products.length === 0) {
+      res.status(404).json({ error: "No products found." });
+    } else {
+      res.status(200).json(products);
+    }
+  } catch (error) {
+    res.status(500).json({ error: "Failed to search products." });
+  }
+});
+
+// Method to fetch a product using ID
+export const fetchProductById = TryCatch(async (req, res, next) => {
+  try {
+    const productId = req.params.id;
+    console.log(productId)
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch product." });
   }
 });

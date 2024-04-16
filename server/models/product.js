@@ -15,12 +15,9 @@ const prodSchema = new mongoose.Schema ({
     required: [true, 'price of product is required.'],
   },
   vendor: {
-    type: String,
-    required: [true, 'name is required.'],
-  },
-  vendor_id: {
-    type: String,
-    required: [true, 'vendorid is required.'],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: [true, 'vendor ID is required.'],
   },
   description: {
     type: String,
