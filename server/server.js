@@ -15,10 +15,10 @@ import ProductsinOrder from "./models/productsInOrder.js";
 import userRoute from './routes/user.js';
 import productRoute from './routes/product.js';
 import chatRoute from './routes/chat.js';
-import wishlistRoute from './routes/wishlist.js';
 import orderRoute from './routes/order.js';
 import cartRoute from './routes/cart.js';
 import prodcartRoute from './routes/productsincart.js';
+import wishlistRoute from './routes/wishlist.js'
 import { connectDB } from "./utils/features.js";
 import { errorMiddleware } from "./middlewares/error.js";
 

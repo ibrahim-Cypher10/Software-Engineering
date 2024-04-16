@@ -1,5 +1,5 @@
 import { User } from "../models/user.js";
-import { Wishlist } from "../models/wishlist.js";
+import Wishlist from "../models/wishlist.js";
 import { TryCatch } from "../middlewares/error.js";
 import bcrypt from 'bcrypt';
 import Product from '../models/product.js'; 
@@ -35,4 +35,36 @@ export const removeFromWishlist = TryCatch(async (req, res, next) => {
     } else {
         res.status(404).json({ error: "Wishlist entry not found." });
     }
+});
+
+// Method to fetch all wishlisted products.
+export const fetchWishlist = TryCatch(async (req, res, next) => {
+  try {
+    const { clientID } = req.body;
+
+    const wishlistItems = await Wishlist.find({ client_id: clientID })
+      .populate('product_id')
+      .exec();
+
+    if (wishlistItems.length === 0) {
+      return res.status(404).send('No wishlist items found for this client');
+    }
+
+    const productDetails = wishlistItems.map(item => ({
+      productId: item.product_id._id,
+      name: item.product_id.name,
+      category: item.product_id.category,
+      price: item.product_id.price,
+      vendor: item.product_id.vendor,
+      vendorId: item.product_id.vendor_id,
+      description: item.product_id.description,
+      wishlisted: true
+    }));
+
+    res.json(productDetails);
+
+  } catch (error) {
+    console.error('Failed to fetch wishlist items:', error);
+    res.status(500).send('Internal Server Error');
+  }
 });
