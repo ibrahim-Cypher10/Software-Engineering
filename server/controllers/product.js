@@ -3,6 +3,7 @@ import { TryCatch } from "../middlewares/error.js";
 import bcrypt from 'bcrypt';
 import Product from '../models/product.js';
 import Wishlist from '../models/wishlist.js'
+import Cart from '../models/cart.js'
 
 // Method to fetch all current products.
 export const fetchProduct = TryCatch(async (req, res, next) => {
@@ -89,6 +90,7 @@ export const deleteProduct =  TryCatch(async (req, res,next) => {
   }
 })
 
+// Method to fetch current products in cart.
 export const getProductsInCart =  TryCatch(async (req, res,next) => {
   try {
       const { customerID } = req.body;

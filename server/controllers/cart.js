@@ -39,3 +39,4 @@ export const getPriceCart = TryCatch(async (req, res, next) => {
         res.status(500).json({ error: "Failed to get cart total price." });
       }
 });
+

@@ -1,6 +1,6 @@
 import express from "express";
 import { createOrder, customerOrders, vendorOrders, confirmOrder } from "../controllers/order.js";
-import { createOrdersWithVendors } from "../controllers/productsinorder.js";
+import { createOrdersWithVendors, fetchOrderDetails } from "../controllers/productsinorder.js";
 const app = express.Router();
 
 // Route to create/place an order.
@@ -17,5 +17,9 @@ app.patch('/confirmorder', confirmOrder);
 
 // Route to create different orders for products with different vendors in cart.
 app.post('/createordersdiffvendors', createOrdersWithVendors);
+
+// Route to fetch the product details for referenced order.
+app.post('/fetchproddetails', fetchOrderDetails);
+
 
 export default app;
