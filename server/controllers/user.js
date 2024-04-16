@@ -1,4 +1,7 @@
 import { User } from "../models/user.js";
+import Order from "../models/order.js";
+import ProductsinOrder from "../models/productsInOrder.js";
+import Product from "../models/product.js";
 // import { Cart} from "../models/cart.js";
 import { TryCatch } from "../middlewares/error.js";
 import bcrypt from 'bcrypt';
@@ -141,20 +144,63 @@ export const updateUser = TryCatch(async (req, res, next) => {
   }
 });
 
-
+// Delete User
 export const deleteUser = TryCatch(async (req, res, next) => {
-    const { userId } = req.params;
-    const user = await User.findByIdAndDelete(userId);
-    if (!user) {
-        return res.status(404).json({
-            success: false,
-            message: "User not found."
+    // const { userId } = req.params;
+    // const user = await User.findByIdAndDelete(userId);
+    // if (!user) {
+    //     return res.status(404).json({
+    //         success: false,
+    //         message: "User not found."
+    //     });
+    // }
+    // return res.status(200).json({
+    //     success: true,
+    //     message: "User deleted successfully."
+    // });
+    try {
+      const { userID } = req.body;
+  
+      const user = await User.findById(userID);
+  
+      if (!user) {
+        return res.status(404).json({ message: "User not found." });
+      }
+  
+      if (user.user_type === "Customer") {
+  
+        const orders = await Order.find({ customer: userID });
+  
+        await ProductsinOrder.deleteMany({
+          order: { $in: orders.map((order) => order._id) },
         });
+  
+        await Order.deleteMany({ customer: userID });
+      } else if (user.user_type === "Vendor") {
+  
+        const products = await Product.find({ vendor: userID });
+  
+        const orders = await ProductsinOrder.find({
+          product: { $in: products.map((product) => product._id) },
+        });
+  
+        await ProductsinOrder.deleteMany({
+          product: { $in: products.map((product) => product._id) },
+        });
+  
+        await Order.deleteMany({
+          _id: { $in: orders.map((order) => order.order) },
+        });
+  
+        await Product.deleteMany({ vendor: userID });
+      }
+  
+      await User.findByIdAndDelete(userID);
+  
+      res.status(200).json({ message: "User deleted successfully." });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete user." });
     }
-    return res.status(200).json({
-        success: true,
-        message: "User deleted successfully."
-    });
 });
 
 export const getUserDetails = TryCatch(async (req, res, next) => {

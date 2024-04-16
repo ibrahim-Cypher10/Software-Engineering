@@ -120,7 +120,7 @@ export const vendorChats = TryCatch(async (req, res, next) => {
     const vendor = await User.findOne({ _id: vendorID, user_type: 'Vendor' });
     if (!vendor) 
     {
-        return res.status(404).json({ message: "no vendor found with the given ID."});
+        return res.status(404).json({ message: "no customer found with the given ID."});
     }
 
     const results = await ChatMessage.aggregate([
