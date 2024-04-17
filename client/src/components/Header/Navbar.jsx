@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon, ShoppingCartIcon, HeartIcon } from '@heroicons/react/24/outline'
+import axios from 'axios';
 
 import "../../styles/Navbar.css"
 
@@ -20,6 +21,40 @@ export default function Navbar({ currentPage }) {
         current: item.name === currentPage,
     }));
 
+    const userID = '6617bc2ecf757dfbbdaed2f8'
+    const [userName, setUserName] = useState('');
+
+    useEffect(() => {
+        const getUserDetails = async () => {
+            try {
+                const response = await fetch('http://localhost:4000/api/user/getuserbyid', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ UserID: userID })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error');
+                }
+
+                const data = await response.json();
+                // console.log(data);
+                setUserName(data.username);
+
+            } catch (error) {
+                console.error('Error fetching user details:', error);
+            }
+        };
+
+        getUserDetails();
+    }, [userID]);
+
+    const getInitials = (name) => {
+        return name.split(' ').map((n) => n[0]).join('').toUpperCase();
+    };
+
     const navigate = useNavigate();
 
     const goToWishlist = () => {
@@ -31,10 +66,10 @@ export default function Navbar({ currentPage }) {
     };
 
     return (
-        <Disclosure as="nav" className="bg-gray-800">
+        <Disclosure as="nav" className="bg-gray-800 fixed w-full top-0 z-20">
             {({ open }) => (
                 <>
-                    <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+                    <div className="mx-auto max-w-7xl px-2 sm:px-6 md:px-8">
                         <div className="relative flex h-16 items-center justify-between">
 
                             {/* Mobile menu button*/}
@@ -113,11 +148,9 @@ export default function Navbar({ currentPage }) {
                                         <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                             <span className="absolute -inset-1.5" />
                                             <span className="sr-only">Open user menu</span>
-                                            <img
-                                                className="h-8 w-8 rounded-full"
-                                                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                alt=""
-                                            />
+                                            <span className="h-8 w-8 rounded-full flex items-center justify-center font-semibold text-white">
+                                                {getInitials(userName)}
+                                            </span>
                                         </Menu.Button>
                                     </div>
                                     <Transition
@@ -140,7 +173,7 @@ export default function Navbar({ currentPage }) {
                                                     </a>
                                                 )}
                                             </Menu.Item>
-                                    
+
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <a

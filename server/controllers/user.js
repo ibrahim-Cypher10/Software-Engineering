@@ -194,7 +194,9 @@ export const deleteUser = TryCatch(async (req, res, next) => {
 export const getUserDetails = TryCatch(async (req, res, next) => {
     try {
         const { UserID } = req.body;
+        console.log(UserID)
         const user = await User.findById(UserID);
+        console.log("this is user", user)
         res.json(user);
       } catch (error) {
         res.status(500).json({ error: "Internal server error" });

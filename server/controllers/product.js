@@ -9,6 +9,7 @@ import Reviews from "../models/reviews.js";
 // Method to fetch all current products.
 export const fetchProducts = TryCatch(async (req, res, next) => {
   try {
+      console.log("recevied here")
       const { client_id } = req.body;                         // now need to send clientID.
       const products = await Product.find();
       const wishlistEntries = await Wishlist.find({ client_id });

@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   overflow-x: hidden;
@@ -5,6 +8,14 @@ body {
 
 a {
     text-decoration: none !important;
+}
+
+.flex-important {
+  display: flex !important;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: #333A73 !important
 }
 
 /*.h-100vh {

@@ -15,6 +15,6 @@ app.put('/updateuser', updateUser);
 app.delete('/deleteuser', deleteUser);
 
 // Finding user details by ID
-app.get('/getuserbyid', getUserDetails);
+app.post('/getuserbyid', getUserDetails);
 
 export default app;
