@@ -1,8 +1,7 @@
 import { Fragment, useState } from 'react'
-import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
+import axios from 'axios';
+import { Popover, Transition } from '@headlessui/react'
 import {
-  Bars3Icon,
-  XMarkIcon,
   DevicePhoneMobileIcon,
   ComputerDesktopIcon,
   CodeBracketIcon,
@@ -16,7 +15,7 @@ import {
   MagnifyingGlassIcon
 
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 const categories = [
   { name: 'Mobile Phones', href: '#', icon: DevicePhoneMobileIcon },
@@ -31,17 +30,27 @@ const categories = [
   { name: 'Food and Grocery', href: '#', icon: CakeIcon },
 ];
 
-const callsToAction = [
-  { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-  { name: 'Contact sales', href: '#', icon: PhoneIcon },
-]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
 export default function Header() {
-  // const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearch = async () => {
+    if (searchTerm.trim()) {
+      try {
+        const response = await axios.get(`/api/product/search?query=${searchTerm}`);
+        // navigate('/searchedprods', { state: { products: response.data } });
+      } catch (error) {
+        console.error('Error during product search:', error.response?.data || error.message);
+      }
+    } else {
+      console.log('Please enter a search term.');
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 flex justify-between items-center p-4">
@@ -85,9 +94,19 @@ export default function Header() {
       </Popover>
 
       {/* Search Bar */}
-      <div className="flex items-center bg-white rounded-full border-2 border-gray-200 w-2/3 sm:w-4/5 ">
-        <input type="text" className="w-full rounded-full py-2 px-4 text-gray-700 leading-tight focus:outline-none" placeholder="Search..." />
-        <button className="p-2 rounded-full text-gray-500 hover:text-gray-700 focus:outline-none">
+      <div className="flex items-center bg-white rounded-full border-2 border-gray-200 w-2/3 sm:w-4/5">
+        <input
+          type="text"
+          className="w-full rounded-full rounded-r-none py-2.5 px-4 text-gray-700 leading-tight focus:outline-none"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button
+          className="p-2 rounded-full text-gray-500 hover:text-gray-700 focus:outline-none"
+          onClick={handleSearch}
+        >
           <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
         </button>
       </div>
